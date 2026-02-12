@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LayoutDashboard, History, LogOut, Zap, Copy, Download, HelpCircle, AlertTriangle, Key, Sun, Moon, Menu, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, History, LogOut, Copy, Download, HelpCircle, AlertTriangle, Key, Sun, Moon, Menu, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
