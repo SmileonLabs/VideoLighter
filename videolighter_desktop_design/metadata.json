@@ -1,0 +1,5 @@
+{
+  "name": "VideoLighter",
+  "description": "A high-performance desktop utility MVP for video compression with a modern, minimalist interface.",
+  "requestFramePermissions": []
+}

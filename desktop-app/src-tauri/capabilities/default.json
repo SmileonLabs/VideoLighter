@@ -1,0 +1,46 @@
+{
+    "$schema": "../gen/schemas/desktop-schema.json",
+    "identifier": "default",
+    "description": "Default permissions for VideoLighter",
+    "windows": [
+        "main"
+    ],
+    "permissions": [
+        "core:default",
+        "opener:default",
+        "shell:allow-open",
+        "dialog:default",
+        "fs:default",
+        "fs:allow-remove",
+        {
+            "identifier": "shell:allow-execute",
+            "allow": [
+                {
+                    "name": "ffmpeg",
+                    "sidecar": true,
+                    "args": true
+                },
+                {
+                    "name": "ffprobe",
+                    "sidecar": true,
+                    "args": true
+                }
+            ]
+        },
+        {
+            "identifier": "shell:allow-spawn",
+            "allow": [
+                {
+                    "name": "ffmpeg",
+                    "sidecar": true,
+                    "args": true
+                },
+                {
+                    "name": "ffprobe",
+                    "sidecar": true,
+                    "args": true
+                }
+            ]
+        }
+    ]
+}

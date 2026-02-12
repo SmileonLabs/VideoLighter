@@ -1,0 +1,232 @@
+import { Command, Child } from '@tauri-apps/plugin-shell';
+import { CompressionSettings } from './types';
+
+export interface FFmpegProgress {
+    percent: number;
+    time: string;
+    fps: number;
+    speed: string;
+}
+
+export type ProgressCallback = (progress: FFmpegProgress) => void;
+
+/**
+ * Checks for available hardware acceleration for AV1 encoding.
+ */
+export async function getBestAV1Encoder(): Promise<string> {
+    try {
+        const command = Command.sidecar('ffmpeg', ['-encoders']);
+        const output = await command.execute();
+        if (output.code !== 0) return 'libaom-av1';
+
+        const stdout = output.stdout;
+        if (stdout.includes('libsvtav1')) return 'libsvtav1';
+        if (stdout.includes('av1_nvenc')) return 'av1_nvenc';
+        if (stdout.includes('av1_qsv')) return 'av1_qsv';
+        if (stdout.includes('av1_amf')) return 'av1_amf';
+        return 'libaom-av1';
+    } catch (error) {
+        return 'libaom-av1';
+    }
+}
+
+/**
+ * Gets file metadata (size) using ffprobe sidecar.
+ */
+export async function getFileInfo(path: string): Promise<{ size: number }> {
+    try {
+        const command = Command.sidecar('ffprobe', [
+            '-v', 'error',
+            '-show_entries', 'format=size',
+            '-of', 'default=noprint_wrappers=1:nokey=1',
+            path
+        ]);
+        const output = await command.execute();
+        return { size: parseInt(output.stdout.trim()) || 0 };
+    } catch (error) {
+        return { size: 0 };
+    }
+}
+
+async function getVideoDuration(inputPath: string): Promise<number> {
+    const command = Command.sidecar('ffprobe', [
+        '-v', 'error',
+        '-show_entries', 'format=duration',
+        '-of', 'default=noprint_wrappers=1:nokey=1',
+        inputPath
+    ]);
+    const output = await command.execute();
+    return parseFloat(output.stdout.trim());
+}
+
+/**
+ * Main compression logic. Returns a promise and a stop function.
+ */
+export function compressVideo(
+    inputPath: string,
+    outputPath: string,
+    options: CompressionSettings,
+    onProgress?: ProgressCallback
+): { promise: Promise<void>, stop: () => Promise<void> } {
+    let childProcess: Child | null = null;
+
+    const run = async () => {
+        const duration = await getVideoDuration(inputPath).catch(() => 0);
+        const encoder = await getBestAV1Encoder();
+
+        const args = ['-i', inputPath];
+
+        // 1. Output Format & Encoder
+        if (options.format === 'GIF') {
+            args.push('-vf', 'fps=15,scale=-1:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse');
+        } else {
+            // Priority: Hardware Encoder (if Turbo) > SVT-AV1 > Software
+            let finalEncoder = encoder;
+            if (options.enableTurbo) {
+                // If Turbo is on, we look for HW encoders specifically
+                if (encoder.includes('nvenc') || encoder.includes('qsv') || encoder.includes('amf')) {
+                    finalEncoder = encoder;
+                }
+            }
+
+            args.push('-c:v', finalEncoder);
+
+            // Quality Mapping (1 to 10 Gauge)
+            const crfValue = 18 + (options.compressionLevel - 1) * 3.5;
+
+            if (finalEncoder === 'libsvtav1') {
+                args.push('-crf', Math.round(crfValue).toString());
+                // Turbo uses preset 10 (very fast), Standard uses 6 (balanced)
+                args.push('-preset', options.enableTurbo ? '10' : '6');
+
+                const svtParams: string[] = [];
+                if (options.subjectiveVQ) svtParams.push('tune=0');
+                if (options.enableHDR) {
+                    args.push('-pix_fmt', 'yuv420p10le');
+                    svtParams.push('enable-hdr=1');
+                }
+                // Multi-threading boost
+                if (options.enableTurbo) svtParams.push('tile-columns=2', 'tile-rows=1');
+
+                if (svtParams.length > 0) args.push('-svtav1-params', svtParams.join(':'));
+            } else if (finalEncoder.includes('nvenc')) {
+                // NVIDIA HW Accl (uses -cq instead of -crf usually)
+                args.push('-rc', 'vbr', '-cq', Math.round(crfValue).toString(), '-preset', options.enableTurbo ? 'p1' : 'p4');
+            } else {
+                args.push('-crf', Math.round(crfValue).toString());
+            }
+
+            // Global Thread Optimization
+            if (options.enableTurbo) {
+                args.push('-threads', '0');
+            }
+        }
+
+        // 2. Filter Chain
+        const filters: string[] = [];
+        if (options.enableDeshake) filters.push('deshake');
+
+        // Watermark Logic
+        if (options.enableWatermark) {
+            const text = options.watermarkText || 'VideoLighter';
+            // Simple overlay at bottom-right
+            filters.push(`drawtext=text='${text}':x=w-tw-20:y=h-th-20:fontsize=24:fontcolor=white@0.5:shadowcolor=black:shadowx=2:shadowy=2`);
+        }
+
+        switch (options.resolution) {
+            case '4K': filters.push('scale=3840:-2'); break;
+            case '1080p': filters.push('scale=1920:-2'); break;
+            case '720p': filters.push('scale=1280:-2'); break;
+            case '480p': filters.push('scale=854:-2'); break;
+            case 'Instagram': filters.push('scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080'); break;
+            case 'YouTube': filters.push('scale=3840:-2'); break;
+            case 'Custom':
+                if (options.customWidth && options.customHeight) {
+                    const scalePart = `scale=${options.customWidth}:${options.customHeight}`;
+                    if (options.lockAspectRatio) {
+                        filters.push(`${scalePart}:force_original_aspect_ratio=decrease,pad=${options.customWidth}:${options.customHeight}:(ow-iw)/2:(oh-ih)/2`);
+                    } else {
+                        filters.push(scalePart);
+                    }
+                }
+                break;
+        }
+
+        if (filters.length > 0 && options.format !== 'GIF') {
+            args.push('-vf', filters.join(','));
+        }
+
+        // 3. Audio Handling (Fix WebM / AAC conflict)
+        if (options.removeAudio || options.format === 'GIF') {
+            args.push('-an');
+        } else {
+            // WebM must use opus or vorbis. We use opus as it's better.
+            if (options.format === 'WebM') {
+                args.push('-c:a', 'libopus', '-b:a', '128k');
+            } else {
+                args.push('-c:a', 'aac', '-b:a', '128k');
+            }
+        }
+
+        // 4. Metadata Cleaning
+        if (options.cleanMetadata) {
+            args.push('-map_metadata', '-1');
+        }
+
+        args.push('-y', outputPath);
+
+        const command = Command.sidecar('ffmpeg', args);
+
+        command.stderr.on('data', line => {
+            const timeMatch = line.match(/time=(\d{2}:\d{2}:\d{2}\.\d{2})/);
+            if (timeMatch && onProgress) {
+                const [h, m, s] = timeMatch[1].split(':').map(parseFloat);
+                const currentTime = h * 3600 + m * 60 + s;
+                const percent = duration > 0 ? Math.min((currentTime / duration) * 100, 99.9) : 0;
+                onProgress({ percent, time: timeMatch[1], fps: 0, speed: '' });
+            }
+        });
+
+        return new Promise<void>((resolve, reject) => {
+            command.on('close', async data => {
+                if (data.code === 0) {
+                    // Success! Now handle thumbnail if enabled
+                    if (options.enableThumbnail) {
+                        try {
+                            const thumbPath = outputPath.replace(/\.[^/.]+$/, "") + "_thumb.jpg";
+                            const thumbCmd = Command.sidecar('ffmpeg', [
+                                '-ss', '1', // Capture at 1s
+                                '-i', inputPath,
+                                '-frames:v', '1',
+                                '-q:v', '2',
+                                '-y', thumbPath
+                            ]);
+                            await thumbCmd.execute();
+                        } catch (thumbErr) {
+                            console.error('Thumbnail generation failed:', thumbErr);
+                        }
+                    }
+
+                    if (onProgress) onProgress({ percent: 100, time: '', fps: 0, speed: '' });
+                    resolve();
+                } else if (data.code === null) {
+                    reject(new Error('STOPPED'));
+                } else {
+                    reject(new Error(`FFmpeg error ${data.code}`));
+                }
+            });
+            command.spawn().then(c => {
+                childProcess = c;
+            }).catch(reject);
+        });
+    };
+
+    return {
+        promise: run(),
+        stop: async () => {
+            if (childProcess) {
+                await childProcess.kill();
+            }
+        }
+    };
+}
