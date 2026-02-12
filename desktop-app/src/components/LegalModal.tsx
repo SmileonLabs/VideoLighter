@@ -77,6 +77,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, t, lang
                                 </div>
 
                                 <div className="space-y-2 pt-4 border-t border-gray-100 dark:border-slate-800 text-[10px] text-gray-400">
+                                    <p className="flex items-center gap-1.5 mb-1">
+                                        <LinkIcon size={12} />
+                                        GitHub: <a href="https://github.com/SmileonLabs/VideoLighter" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:underline">https://github.com/SmileonLabs/VideoLighter</a>
+                                    </p>
                                     <p>공식 사이트: videolighter.smileon.app</p>
                                     <p>© 2026 Smileon Labs. All rights reserved.</p>
                                 </div>
@@ -114,6 +118,10 @@ export const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, t, lang
                                 </div>
 
                                 <div className="pt-4 border-t border-gray-100 dark:border-slate-800 text-[10px] text-gray-400">
+                                    <p className="flex items-center gap-1.5 mb-1">
+                                        <LinkIcon size={12} />
+                                        GitHub: <a href="https://github.com/SmileonLabs/VideoLighter" target="_blank" rel="noopener noreferrer" className="text-primary-500 hover:underline">https://github.com/SmileonLabs/VideoLighter</a>
+                                    </p>
                                     <p>Official Website: videolighter.smileon.app</p>
                                     <p>© 2026 Smileon Labs. All rights reserved.</p>
                                 </div>

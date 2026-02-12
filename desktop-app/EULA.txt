@@ -1,0 +1,49 @@
+[한국어 / Korean]
+
+제 1 조 (목적)
+본 약관은 Smileon Labs(이하 "회사")가 제공하는 VideoLighter 데스크톱 애플리케이션(이하 "소프트웨어")의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+
+제 2 조 (라이선스 및 이용 권한)
+1. 본 소프트웨어는 GNU General Public License v3.0 (GPL v3)에 따라 배포됩니다.
+2. 이용자는 본 소프트웨어의 소스코드를 열람, 수정 및 재배포할 권리를 가집니다. 단, 재배포 시에는 동일한 GPL v3 라이선스를 적용해야 합니다.
+3. 일부 고급 기능은 라이선스 키 등록을 통해서만 활성화될 수 있습니다.
+
+제 3 조 (데이터 보호 및 프라이버시)
+1. 본 소프트웨어는 모든 동영상 압축 처리를 이용자의 로컬 기기 내에서만 수행합니다.
+2. 이용자의 영상 데이터는 어떠한 경우에도 회사의 서버로 전송되지 않습니다.
+3. 회사는 이용자의 영상 파일 및 개인 데이터를 수집하거나 열람할 수 없습니다.
+
+제 4 조 (면책 조항 및 책임의 제한)
+1. 본 소프트웨어는 "있는 그대로(AS IS)" 제공되며, 명시적 또는 묵시적인 어떠한 형태의 보증도 제공하지 않습니다.
+2. 이용자는 소프트웨어 사용 전 중요 데이터를 반드시 백업해야 합니다.
+3. 회사는 본 소프트웨어 사용 중 발생하는 데이터 유실, 파일 훼손, 시스템 장애 또는 기타 어떠한 손해에 대해서도 법적 책임을 지지 않습니다.
+4. 오프라인 처리 방식의 특성상, 회사는 이용자가 유실한 데이터를 복구 기술을 보유하고 있지 않으며 복구 의무가 없습니다.
+
+제 5 조 (준거법 및 관할)
+본 약관은 대한민국 법령에 의하여 해석되며, 이용자와 회사 간에 발생한 분쟁에 관한 소송은 회사의 소재지를 관할하는 법원을 합의 관할 법원으로 합니다.
+
+---
+
+[English]
+
+Article 1 (Purpose)
+These Terms and Conditions govern the relationship between Smileon Labs ("Company") and the user regarding the use of the VideoLighter desktop application ("Software").
+
+Article 2 (License and Usage Rights)
+1. This Software is distributed under the GNU General Public License v3.0 (GPL v3).
+2. Users have the right to access, modify, and redistribute the source code. Any redistribution must be under the same GPL v3 license.
+3. Certain premium features may require a valid license key for activation.
+
+Article 3 (Data Protection and Privacy)
+1. All video processing is performed 100% locally on the user's device.
+2. User video data is never transmitted to the Company's servers.
+3. The Company does not collect or have access to any user video files or private data.
+
+Article 4 (Disclaimer and Limitation of Liability)
+1. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+2. USERS ARE RESPONSIBLE FOR BACKING UP IMPORTANT DATA BEFORE USING THE SOFTWARE.
+3. THE COMPANY SHALL NOT BE LIABLE FOR ANY DATA LOSS, FILE CORRUPTION, SYSTEM FAILURE, OR ANY OTHER DAMAGES ARISING FROM THE USE OF THE SOFTWARE.
+4. GIVEN THE OFFLINE NATURE OF THE SOFTWARE, THE COMPANY HAS NO ABILITY OR OBLIGATION TO RECOVER ANY USER DATA.
+
+Article 5 (Governing Law)
+These Terms shall be governed by and construed in accordance with the laws of the Republic of Korea.
