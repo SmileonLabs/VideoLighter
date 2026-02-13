@@ -53,6 +53,10 @@ interface UsageStatRow {
 }
 
 const fmt = (v?: string | null) => (v ? new Date(v).toLocaleString() : '-');
+const pickOne = <T,>(value: T | T[] | null | undefined): T | null => {
+  if (!value) return null;
+  return Array.isArray(value) ? value[0] ?? null : value;
+};
 
 const AdminPage = () => {
   const { user, loading } = useAuth();
@@ -119,8 +123,30 @@ const AdminPage = () => {
       setProfiles((profilesRes.data as ProfileRow[]) || []);
       setLicenses((licensesRes.data as LicenseRow[]) || []);
       setDevices((devicesRes.data as DeviceRow[]) || []);
-      setActivations((activationsRes.data as ActivationRow[]) || []);
-      setUsageStats((usageRes.data as UsageStatRow[]) || []);
+
+      const normalizedActivations: ActivationRow[] = ((activationsRes.data as any[]) || []).map((row) => ({
+        id: row.id,
+        license_id: row.license_id,
+        device_id: row.device_id,
+        activated_at: row.activated_at,
+        deactivated_at: row.deactivated_at,
+        licenses: pickOne(row.licenses),
+        devices: pickOne(row.devices),
+      }));
+      setActivations(normalizedActivations);
+
+      const normalizedUsageStats: UsageStatRow[] = ((usageRes.data as any[]) || []).map((row) => ({
+        license_id: row.license_id,
+        user_id: row.user_id,
+        total_jobs: row.total_jobs,
+        success_jobs: row.success_jobs,
+        failed_jobs: row.failed_jobs,
+        total_input_bytes: row.total_input_bytes,
+        total_output_bytes: row.total_output_bytes,
+        last_used_at: row.last_used_at,
+        licenses: pickOne(row.licenses),
+      }));
+      setUsageStats(normalizedUsageStats);
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Failed to load admin data';
       setError(message);
