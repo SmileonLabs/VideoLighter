@@ -56,4 +56,8 @@ desktop-app/src-tauri/gen/
 desktop-app/src-tauri/bundle/
 *.msi
 *.exe
+.codex-temp/
+
+# Project docs (local-only)
+SERVICE_OVERVIEW.md
 
