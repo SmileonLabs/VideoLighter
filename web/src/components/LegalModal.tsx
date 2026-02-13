@@ -148,6 +148,20 @@ const LegalModal = ({ isOpen, onClose, type }: LegalModalProps) => {
                                             <h3 className="text-lg font-black text-slate-900 dark:text-white mb-3">{t('legal.terms_sec3_title')}</h3>
                                             <p className="font-medium">{t('legal.terms_sec3_desc')}</p>
                                         </div>
+
+                                        <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800">
+                                            <h3 className="text-lg font-black text-slate-900 dark:text-white mb-3">
+                                                {t('legal.license_policy_title', 'License Policy Repository')}
+                                            </h3>
+                                            <a
+                                                href="https://github.com/SmileonLabs/VideoLighter"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="font-mono text-sm text-indigo-600 dark:text-indigo-400 break-all hover:underline"
+                                            >
+                                                https://github.com/SmileonLabs/VideoLighter
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             )}

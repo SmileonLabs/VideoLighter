@@ -28,13 +28,25 @@ Deno.serve(async (req: Request) => {
                 return new Response(JSON.stringify({ error: 'Missing required fields: email or orderId' }), { status: 400 });
             }
 
-            let productType: 'monthly' | 'lifetime' = 'lifetime';
+            const productName = String(data.product?.name || data.product_name || data.description || '').toLowerCase();
+            let productType: 'monthly' | 'lifetime' | null = null;
             if (monthlyProductId && productId === monthlyProductId) {
                 productType = 'monthly';
             } else if (lifetimeProductId && productId === lifetimeProductId) {
                 productType = 'lifetime';
-            } else if (typeof data.product_name === 'string' && data.product_name.toLowerCase().includes('month')) {
+            } else if (productName.includes('month') || productName.includes('1 month') || productName.includes('monthly')) {
                 productType = 'monthly';
+            } else if (productName.includes('lifetime')) {
+                productType = 'lifetime';
+            }
+
+            if (!productType) {
+                return new Response(
+                    JSON.stringify({
+                        error: `Unable to determine product type. productId=${productId ?? 'null'}, productName=${productName || 'null'}`,
+                    }),
+                    { status: 400 },
+                );
             }
 
             const expiresAt = productType === 'lifetime'
