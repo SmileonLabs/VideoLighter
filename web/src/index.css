@@ -1,14 +1,32 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #8b5cf6;
+  --color-secondary: #c084fc;
+  --color-dark: #0f172a;
+  --color-darker: #06070a;
+  --color-surface: #11121d;
+
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
 :root {
-  --bg-color: #030712;
+  --bg-color: #020617;
   --bg-secondary: #0a0f1e;
   --text-color: #ffffff;
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --color-gray-950: #030712;
-  --indigo-500: #6366f1;
-  --purple-500: #a855f7;
 }
 
 .light {
@@ -19,6 +37,17 @@
   --text-muted: #475569;
   --card-bg: #ffffff;
   --card-border: rgba(0, 0, 0, 0.08);
+
+  /* Pricing Specific */
+  --pricing-bg: rgba(255, 255, 255, 0.8);
+  --pricing-border: rgba(0, 0, 0, 0.08);
+  --pricing-text-main: #111827;
+  --pricing-text-sub: #6b7280;
+
+  --pricing-btn-bg: #ffffff;
+  --pricing-btn-border: #e5e7eb;
+  --pricing-btn-text: #111827;
+  --pricing-btn-hover: #f9fafb;
 }
 
 .dark {
@@ -29,6 +58,17 @@
   --text-muted: #94a3b8;
   --card-bg: rgba(255, 255, 255, 0.05);
   --card-border: rgba(255, 255, 255, 0.1);
+
+  /* Pricing Specific */
+  --pricing-bg: #030712;
+  --pricing-border: rgba(255, 255, 255, 0.25);
+  --pricing-text-main: #ffffff;
+  --pricing-text-sub: #9ca3af;
+
+  --pricing-btn-bg: rgba(255, 255, 255, 0.03);
+  --pricing-btn-border: rgba(255, 255, 255, 0.15);
+  --pricing-btn-text: #ffffff;
+  --pricing-btn-hover: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -63,6 +103,10 @@ body {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Smooth scrolling */
