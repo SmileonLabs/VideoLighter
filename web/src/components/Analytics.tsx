@@ -38,7 +38,7 @@ const Analytics = () => {
   useEffect(() => {
     if (!measurementId || !window.gtag) return;
 
-    window.gtag('config', measurementId, {
+    window.gtag('event', 'page_view', {
       page_title: document.title,
       page_path: location.pathname + location.search,
       page_location: window.location.href,

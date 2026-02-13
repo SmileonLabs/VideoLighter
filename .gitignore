@@ -60,4 +60,7 @@ desktop-app/src-tauri/bundle/
 
 # Project docs (local-only)
 SERVICE_OVERVIEW.md
+web/ADMIN_DB_SETUP.md
+web/POLAR_SUPABASE_USER_STEPS.md
+web/SUPABASE_POLAR_COMMUNICATION.md
 
