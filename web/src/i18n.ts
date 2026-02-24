@@ -208,9 +208,9 @@ i18n
                         "terms_sec3_desc": "The software is provided \"as is\". We are not responsible for data loss or system errors during use. Always backup your important files."
                     },
                     "seo": {
-                        "title": "VideoLighter | Lifetime Desktop Video Optimizer",
-                        "description": "VideoLighter v1.0.0: One-time purchase for lifetime video storage savings. 100% Offline, Privacy-first, Perceptual Quality optimization.",
-                        "keywords": "video compressor, lifetime license, video optimizer, AV1 compression, VP9, storage saver"
+                        "title": "VideoLighter | Fast Offline Video & Image Compressor for Desktop",
+                        "description": "Compress videos and images quickly on your PC with no uploads. A privacy-first offline desktop compressor focused on speed and quality.",
+                        "keywords": "video compressor, image compressor, offline desktop app, local compression, privacy video compression, windows video compressor, videolighter"
                     },
                     "footer": {
                         "contact": "Contact: contact@smileon.app",
@@ -419,9 +419,9 @@ i18n
                         "terms_sec3_desc": "본 프로그램은 \"있는 그대로\" 제공되며, 서비스 이용 중 발생한 데이터 손실이나 시스템 오류에 대해 직접적인 책임을 지지 않습니다. 중요 파일은 항상 백업을 권장합니다."
                     },
                     "seo": {
-                        "title": "VideoLighter | 평생 소장하는 스마트한 동영상 압축 프로그램",
-                        "description": "VideoLighter v1.0.0 정식 출시! 구독료 없이 한 번 구매로 평생 영상을 압축하고 보관하세요. 100% 오프라인, 프라이버시 보호.",
-                        "keywords": "동영상 압축, 평생 라이선스, 영상 용량 줄이기, HDR 영상 압축, 비디오 다이어트"
+                        "title": "VideoLighter | 빠른 오프라인 데스크탑 영상/이미지 압축",
+                        "description": "영상과 이미지를 내 PC에서 서버 업로드 없이 빠르게 압축하세요. 속도와 프라이버시를 지키는 오프라인 데스크탑 압축 앱입니다.",
+                        "keywords": "동영상 압축, 이미지 압축, 오프라인 압축, 데스크탑 앱, 로컬 압축, 개인정보 보호, 비디오라이터"
                     },
                     "footer": {
                         "contact": "문의 : contact@smileon.app",

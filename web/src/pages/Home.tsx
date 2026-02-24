@@ -287,8 +287,15 @@ const Home = () => {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "VideoLighter",
+        "description": "Fast offline desktop app to compress videos and images on your PC with no uploads.",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Windows 10, Windows 11",
+        "featureList": [
+            "Offline local processing",
+            "Video and image compression",
+            "Privacy-first with no uploads",
+            "Fast desktop workflow"
+        ],
         "offers": [
             {
                 "@type": "Offer",
