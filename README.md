@@ -16,6 +16,14 @@
 - **Privacy-First (100% Offline)**: Videos never leave your device. Complete offline processing with optional Metadata/GPS cleaning to protect your privacy.
 - **Modern Desktop UI**: Built with Tauri for a lightweight, premium experience with smooth micro-interactions.
 
+### Latest Updates (2026-02-24)
+
+- **Image Compression Mode Added**: Added a new `Image Compression` mode with format options `JPG / PNG / WEBP` (default: JPG), quality control, and aspect-ratio-safe output.
+- **Mode-Based File Filtering**: File picker and drag & drop now filter by current mode (`video` or `image`) to prevent unsupported files from entering the queue.
+- **License UX Improved**: Added in-app **My License** modal and connected **PC Move** action to the mypage transfer flow.
+- **Free Plan Quota Split**: Daily free limits are now separated by media type: `video 3/day`, `image 20/day`.
+- **Update Notice Banner**: Added lightweight in-app update notice using `web/public/desktop-version.json` and R2 installer link.
+
 ---
 
 ## 🛠 Tech Stack
