@@ -220,19 +220,27 @@ const Home = () => {
         };
     }, [user?.id]);
 
-    const handleDownloadClick = () => {
-        // Simple macOS/iOS detection
-        const isMac = /Mac|iPhone|iPod|iPad/i.test(navigator.userAgent || navigator.platform || "");
-        if (isMac) {
+    const isMacOS = () =>
+        /Mac/i.test(navigator.userAgent || navigator.platform || "") &&
+        !/iPhone|iPod|iPad/i.test(navigator.userAgent || "");
+
+    const handleMacDownload = () => {
+        if (!isMacOS()) {
             alert(i18n.language.startsWith('ko')
-                ? 'macOS 버전은 현재 준비 중입니다. 출시 소식을 조금만 기다려주세요!'
-                : 'macOS version is currently coming soon. Stay tuned for the release!');
+                ? '이 소프트웨어는 지원하지 않는 파일 형식입니다. (macOS 전용)'
+                : 'This file format is not supported on your OS. (macOS only)');
             return;
         }
-        handleDirectDownload();
+        window.location.href = 'https://github.com/dodokim123/VideoLighter/releases/download/v1.0.1-mac/VideoLighter_1.0.1_universal.dmg';
     };
 
-    const handleDirectDownload = () => {
+    const handleWindowsDownload = () => {
+        if (isMacOS()) {
+            alert(i18n.language.startsWith('ko')
+                ? '이 소프트웨어는 지원하지 않는 파일 형식입니다. (Windows 전용)'
+                : 'This file format is not supported on your OS. (Windows only)');
+            return;
+        }
         const downloadUrl = import.meta.env.VITE_DOWNLOAD_URL;
         if (downloadUrl) {
             window.location.href = downloadUrl;
@@ -325,7 +333,7 @@ const Home = () => {
                 user={user}
                 signInWithGoogle={signInWithGoogle}
                 signOut={signOut}
-                onDownload={user ? undefined : handleDirectDownload}
+                onDownload={user ? undefined : handleWindowsDownload}
             />
 
             <main className="relative">
@@ -365,8 +373,18 @@ const Home = () => {
                                 >
                                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full xl:w-auto">
                                         <button
-                                            onClick={handleDownloadClick}
+                                            onClick={handleMacDownload}
                                             className={`w-full sm:w-auto px-8 py-4 rounded-2xl font-black text-base md:text-lg transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 bg-indigo-600 text-white hover:bg-indigo-500 cursor-pointer shadow-xl shadow-indigo-600/30 ${isFlashing ? 'animate-pulse ring-4 ring-indigo-400 ring-offset-2 ring-offset-[var(--bg-color)]' : ''}`}
+                                        >
+                                            <Zap className="w-6 h-6 fill-current" />
+                                            <div className="flex flex-col items-start leading-none">
+                                                <span>{t('hero.cta_primary')}</span>
+                                                <span className="text-xs font-medium opacity-80 mt-0.5 whitespace-nowrap">macOS Universal (112 MB)</span>
+                                            </div>
+                                        </button>
+                                        <button
+                                            onClick={handleWindowsDownload}
+                                            className={`w-full sm:w-auto px-8 py-4 rounded-2xl font-black text-base md:text-lg transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 bg-slate-700 text-white hover:bg-slate-600 cursor-pointer shadow-xl shadow-slate-700/30 ${isFlashing ? 'animate-pulse ring-4 ring-indigo-400 ring-offset-2 ring-offset-[var(--bg-color)]' : ''}`}
                                         >
                                             <Zap className="w-6 h-6 fill-current" />
                                             <div className="flex flex-col items-start leading-none">
