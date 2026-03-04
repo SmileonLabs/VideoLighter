@@ -23,7 +23,7 @@ const LoginModal = ({ onClose, onGoogle, onApple, isKo }: LoginModalProps) => {
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.95, opacity: 0, y: 10 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                    className="relative w-full max-w-[400px] overflow-hidden rounded-[2rem] border border-white/20 bg-white/70 dark:bg-[#030712]/70 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-8 flex flex-col items-center gap-8"
+                    className="relative w-full max-w-[400px] rounded-[2rem] border border-white/20 bg-white/70 dark:bg-[#030712]/70 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-8 flex flex-col items-center gap-8"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Subtle Glow Background */}
