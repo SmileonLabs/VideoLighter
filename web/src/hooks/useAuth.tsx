@@ -8,6 +8,7 @@ interface AuthContextType {
     loading: boolean;
     signOut: () => Promise<void>;
     signInWithGoogle: () => Promise<void>;
+    signInWithApple: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,13 +47,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (error) throw error;
     };
 
+    const signInWithApple = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'apple',
+            options: {
+                redirectTo: window.location.origin,
+                queryParams: {
+                    locale: 'ko_KR',
+                }
+            }
+        });
+        if (error) throw error;
+    };
+
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, signOut, signInWithGoogle }}>
+        <AuthContext.Provider value={{ user, loading, signOut, signInWithGoogle, signInWithApple }}>
             {children}
         </AuthContext.Provider>
     );

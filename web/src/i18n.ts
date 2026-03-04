@@ -14,6 +14,8 @@ i18n
                         "pricing": "Pricing",
                         "dashboard": "Dashboard",
                         "login": "Login",
+                        "loginWithGoogle": "Google",
+                        "loginWithApple": "Apple",
                         "logout": "Logout",
                         "support": "Support"
                     },
@@ -225,6 +227,8 @@ i18n
                         "pricing": "가격",
                         "dashboard": "대시보드",
                         "login": "로그인",
+                        "loginWithGoogle": "구글",
+                        "loginWithApple": "애플",
                         "logout": "로그아웃",
                         "support": "지원"
                     },
