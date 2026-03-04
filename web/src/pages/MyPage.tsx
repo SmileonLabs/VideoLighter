@@ -199,7 +199,15 @@ const MyPage = () => {
         window.location.href = finalUrl;
     };
 
+    const isMacOS = () =>
+        /Mac/i.test(navigator.userAgent || navigator.platform || "") &&
+        !/iPhone|iPod|iPad/i.test(navigator.userAgent || "");
+
     const handleDownload = async () => {
+        if (isMacOS()) {
+            window.location.href = 'https://pub-cabc405cb7a74235aab394987d229813.r2.dev/VideoLighter_1.0.1_universal.dmg';
+            return;
+        }
         const downloadUrl = await getDesktopDownloadUrl() || import.meta.env.VITE_DOWNLOAD_URL;
         if (downloadUrl) {
             window.location.href = downloadUrl;
@@ -339,7 +347,7 @@ const MyPage = () => {
                                     onClick={handleDownload}
                                     className="px-8 py-4 bg-white text-indigo-950 hover:bg-indigo-50 rounded-2xl font-bold transition-all shadow-lg active:scale-95 flex items-center gap-2 cursor-pointer"
                                 >
-                                    <Download className="w-5 h-5" /> {isKo ? '앱 다운로드' : 'Download App'}
+                                    <Download className="w-5 h-5" /> {isMacOS() ? (isKo ? 'macOS 다운로드' : 'macOS Download') : (isKo ? 'Windows 다운로드' : 'Windows Download')}
                                 </button>
                                 <button
                                     onClick={() => void handleDeviceReset()}
@@ -358,7 +366,9 @@ const MyPage = () => {
                                 )}
                             </div>
                             <p className="text-xs mt-4 text-indigo-100/80 font-medium">
-                                {isKo ? '139MB · Windows 사용 가능 · macOS 출시 예정' : '139MB · Windows available · macOS coming soon'}
+                                {isMacOS()
+                                    ? (isKo ? '112MB · macOS Universal (Apple Silicon & Intel)' : '112MB · macOS Universal (Apple Silicon & Intel)')
+                                    : (isKo ? '139MB · Windows 10/11 사용 가능' : '139MB · Windows 10/11 available')}
                             </p>
                             <p className="text-xs mt-2 text-indigo-100/70 font-medium">
                                 {isKo ? '기기 변경은 14일마다 1회 가능합니다. 예외 상황은 contact@smileon.app 으로 문의해 주세요.' : 'Device change is available once every 14 days. For exceptions, contact contact@smileon.app.'}
@@ -411,7 +421,7 @@ const MyPage = () => {
                             onClick={handleDownload}
                             className="w-full py-4 rounded-xl font-bold text-sm border transition-all cursor-pointer bg-[var(--text-color)] text-[var(--bg-color)] border-[var(--text-color)] hover:opacity-90 active:scale-95"
                         >
-                            {isKo ? '앱 다운로드' : 'Download App'}
+                            {isMacOS() ? (isKo ? 'macOS 다운로드' : 'macOS Download') : (isKo ? 'Windows 다운로드' : 'Windows Download')}
                         </button>
                     ) : (
                         <button
