@@ -81,11 +81,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         /Mac/i.test(navigator.userAgent || navigator.platform || '') &&
         !/iPhone|iPod|iPad/i.test(navigator.userAgent || '');
 
-    const handleDownload = async () => {
-        if (isMacOS()) {
-            window.location.href = 'https://pub-cabc405cb7a74235aab394987d229813.r2.dev/VideoLighter_1.0.1_universal.dmg';
-            return;
-        }
+    const handleDownloadMac = () => {
+        window.location.href = 'https://pub-cabc405cb7a74235aab394987d229813.r2.dev/VideoLighter_1.0.1_universal.dmg';
+    };
+
+    const handleDownloadWindows = async () => {
         const downloadUrl = await getDesktopDownloadUrl() || import.meta.env.VITE_DOWNLOAD_URL;
         if (downloadUrl) {
             window.location.href = downloadUrl;
@@ -166,25 +166,28 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                     {/* Integrated Download Link in Menu (Bottom Aligned) */}
                     <div className={`mt-auto pt-4 border-t ${sectionDividerClass}`}>
-                        <button
-                            onClick={handleDownload}
-                            className={`w-full text-left group px-4 py-3 rounded-xl border transition-all relative overflow-hidden cursor-pointer ${downloadCardClass}`}
-                        >
-                            <div className="relative z-10">
-                                <div className={`flex items-center gap-3 mb-1.5 ${downloadTitleClass}`}>
-                                    <Download className="w-5 h-5" />
-                                    <span className="font-bold text-sm">{t('dashboard.menu_download', t('dashboard.download_app', 'Download App'))}</span>
-                                </div>
-
-                                <div className="pl-8 space-y-0.5">
-                                    <div className={`flex items-center gap-2 text-xs font-medium ${downloadMetaClass}`}>
-                                        <span>{isMacOS() ? 'macOS' : t('dashboard.windows_label', 'Windows')}</span>
-                                        <span className="w-1 h-1 rounded-full bg-current opacity-50" />
-                                        <span>{isMacOS() ? '126MB' : '139MB'}</span>
-                                    </div>
-                                </div>
+                        <div className={`px-4 py-3 rounded-xl border ${downloadCardClass}`}>
+                            <div className={`flex items-center gap-3 mb-2 ${downloadTitleClass}`}>
+                                <Download className="w-5 h-5" />
+                                <span className="font-bold text-sm">{t('dashboard.menu_download', 'Download App')}</span>
                             </div>
-                        </button>
+                            <div className="flex flex-col gap-1.5">
+                                <button
+                                    onClick={handleDownloadMac}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 ${downloadMetaClass}`}
+                                >
+                                    <span>🍎 macOS</span>
+                                    <span className="opacity-60">126MB</span>
+                                </button>
+                                <button
+                                    onClick={handleDownloadWindows}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 ${downloadMetaClass}`}
+                                >
+                                    <span>🪟 Windows</span>
+                                    <span className="opacity-60">139MB</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </nav>
 
