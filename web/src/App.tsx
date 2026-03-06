@@ -1,39 +1,55 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
+import HomeTest from './pages/HomeTest';
 import MyPage from './pages/MyPage';
-import DesignTest from './pages/DesignTest';
 import AdminPage from './pages/AdminPage';
-import { AuthProvider } from './hooks/useAuth';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { useAuth } from './hooks/useAuth';
 import Analytics from './components/Analytics';
+import './i18n';
+
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="min-h-screen bg-[var(--bg-color)] flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full border-4 border-indigo-600/20 border-t-indigo-600 animate-spin"></div>
+    </div>;
+  }
+  
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+  
+  return <>{children}</>;
+};
+
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Analytics />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/design-test" element={<DesignTest />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/mypage"
-            element={
-              <ProtectedRoute>
-                <MyPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <Router>
+      <Analytics />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/test" element={<HomeTest />} />
+        <Route 
+          path="/mypage" 
+          element={
+            <ProtectedRoute>
+              <MyPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
