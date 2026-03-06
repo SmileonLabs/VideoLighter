@@ -77,9 +77,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         i18n.changeLanguage(lng);
     };
 
-    const isMacOS = () =>
-        /Mac/i.test(navigator.userAgent || navigator.platform || '') &&
-        !/iPhone|iPod|iPad/i.test(navigator.userAgent || '');
 
     const handleDownloadMac = () => {
         window.location.href = 'https://pub-cabc405cb7a74235aab394987d229813.r2.dev/VideoLighter_1.0.1_universal.dmg';

@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
-import HomeTest from './pages/HomeTest';
 import MyPage from './pages/MyPage';
 import AdminPage from './pages/AdminPage';
 import { useAuth } from './hooks/useAuth';
@@ -31,7 +30,6 @@ function App() {
       <Analytics />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test" element={<HomeTest />} />
         <Route 
           path="/mypage" 
           element={
