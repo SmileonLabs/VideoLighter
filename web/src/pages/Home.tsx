@@ -10,7 +10,6 @@ import { themeClass } from '../lib/themeClass';
 import LegalModal from '../components/LegalModal';
 import SEO from '../components/SEO';
 import LoginModal from '../components/LoginModal';
-import InterfaceShowcase from '../design-test/components/InterfaceShowcase';
 import imgHdr from '../assets/features/feature_hdr_vibrant_1770961660749.jpg';
 import imgPrivacy from '../assets/features/privacy_security_1770961787193.jpg';
 import imgParallel from '../assets/features/feature_parallel_processing_1770961694904.jpg';
@@ -454,7 +453,6 @@ const Home = () => {
                     </div>
                 </section>
 
-                <InterfaceShowcase />
 
                 {/* Recommendation Section (이런 분들에게 추천합니다) */}
                 <section className="py-24 md:py-32 px-6 bg-[var(--bg-color)] border-y border-[var(--card-border)] relative overflow-hidden">
