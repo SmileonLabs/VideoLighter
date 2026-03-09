@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import AdminPage from './pages/AdminPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import DeleteAccount from './pages/DeleteAccount';
 import { useAuth } from './hooks/useAuth';
 import Analytics from './components/Analytics';
 import './i18n';
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/delete-account" element={<DeleteAccount />} />
         <Route 
           path="/mypage" 
           element={
