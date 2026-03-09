@@ -7,6 +7,7 @@
         "beforeDevCommand": "npm run dev",
         "devUrl": "http://localhost:1420",
         "beforeBuildCommand": "npm run build",
+        "beforeBundleCommand": "xattr -cr src-tauri/target/ 2>/dev/null; exit 0",
         "frontendDist": "../dist"
     },
     "app": {
@@ -24,7 +25,9 @@
     "bundle": {
         "active": true,
         "targets": [
-            "msi"
+            "msi",
+            "dmg",
+            "app"
         ],
         "icon": [
             "icons/32x32.png",
@@ -34,13 +37,18 @@
             "icons/icon.ico"
         ],
         "externalBin": [
-            "ffmpeg",
-            "ffprobe"
+            "binaries/ffmpeg",
+            "binaries/ffprobe"
         ],
         "windows": {
             "wix": {
                 "upgradeCode": "F2E8B7D8-4B67-4A9C-9E48-6FAEE243C1E2"
             }
+        },
+        "macOS": {
+            "minimumSystemVersion": "10.15",
+            "signingIdentity": "Developer ID Application: Junhee Lee (B763M3724N)",
+            "entitlements": null
         }
     }
 }

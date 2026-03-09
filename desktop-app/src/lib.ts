@@ -99,18 +99,27 @@ export function compressImage(
 
 /**
  * Checks for available hardware acceleration for AV1 encoding.
+ * Priority: libsvtav1 (best SW) > HW encoders (platform-specific) > libaom-av1 (fallback)
+ *
+ * Platform notes:
+ *   - Windows: av1_nvenc (NVIDIA), av1_qsv (Intel), av1_amf (AMD)
+ *   - macOS:   av1_videotoolbox (Apple Silicon, macOS 14+)
+ *   - Linux:   av1_nvenc, av1_qsv, av1_vaapi
  */
 export async function getBestAV1Encoder(): Promise<string> {
     try {
-        const command = Command.sidecar('ffmpeg', ['-encoders']);
+        const command = Command.sidecar('binaries/ffmpeg', ['-encoders']);
         const output = await command.execute();
         if (output.code !== 0) return 'libaom-av1';
 
         const stdout = output.stdout;
         if (stdout.includes('libsvtav1')) return 'libsvtav1';
-        if (stdout.includes('av1_nvenc')) return 'av1_nvenc';
-        if (stdout.includes('av1_qsv')) return 'av1_qsv';
-        if (stdout.includes('av1_amf')) return 'av1_amf';
+        // Hardware acceleration (cross-platform)
+        if (stdout.includes('av1_videotoolbox')) return 'av1_videotoolbox'; // macOS Apple Silicon
+        if (stdout.includes('av1_nvenc')) return 'av1_nvenc';               // NVIDIA (Windows/Linux)
+        if (stdout.includes('av1_qsv')) return 'av1_qsv';                  // Intel Quick Sync
+        if (stdout.includes('av1_amf')) return 'av1_amf';                   // AMD (Windows)
+        if (stdout.includes('av1_vaapi')) return 'av1_vaapi';               // Linux VA-API
         return 'libaom-av1';
     } catch (error) {
         return 'libaom-av1';
@@ -122,7 +131,7 @@ export async function getBestAV1Encoder(): Promise<string> {
  */
 export async function getFileInfo(path: string): Promise<{ size: number }> {
     try {
-        const command = Command.sidecar('ffprobe', [
+        const command = Command.sidecar('binaries/ffprobe', [
             '-v', 'error',
             '-show_entries', 'format=size',
             '-of', 'default=noprint_wrappers=1:nokey=1',
@@ -136,7 +145,7 @@ export async function getFileInfo(path: string): Promise<{ size: number }> {
 }
 
 async function getVideoDuration(inputPath: string): Promise<number> {
-    const command = Command.sidecar('ffprobe', [
+    const command = Command.sidecar('binaries/ffprobe', [
         '-v', 'error',
         '-show_entries', 'format=duration',
         '-of', 'default=noprint_wrappers=1:nokey=1',
@@ -198,8 +207,15 @@ export function compressVideo(
                     if (options.enableTurbo) svtParams.push('tile-columns=2', 'tile-rows=1');
 
                     if (svtParams.length > 0) args.push('-svtav1-params', svtParams.join(':'));
+                } else if (finalEncoder === 'av1_videotoolbox') {
+                    // macOS Apple Silicon hardware encoder
+                    args.push('-q:v', Math.round(crfValue).toString());
+                    if (options.enableTurbo) args.push('-realtime', '1');
                 } else if (finalEncoder.includes('nvenc')) {
                     args.push('-rc', 'vbr', '-cq', Math.round(crfValue).toString(), '-preset', options.enableTurbo ? 'p1' : 'p4');
+                } else if (finalEncoder === 'av1_vaapi') {
+                    // Linux VA-API hardware encoder
+                    args.push('-rc_mode', 'CQP', '-qp', Math.round(crfValue).toString());
                 } else {
                     // Fallback (likely libaom-av1)
                     args.push('-crf', Math.round(crfValue).toString());
@@ -288,7 +304,7 @@ export function compressVideo(
 
         args.push('-y', outputPath);
 
-        const command = Command.sidecar('ffmpeg', args);
+        const command = Command.sidecar('binaries/ffmpeg', args);
 
         command.stderr.on('data', line => {
             const timeMatch = line.match(/time=(\d{2}:\d{2}:\d{2}\.\d{2})/);
@@ -307,7 +323,7 @@ export function compressVideo(
                     if (options.enableThumbnail) {
                         try {
                             const thumbPath = outputPath.replace(/\.[^/.]+$/, "") + "_thumb.jpg";
-                            const thumbCmd = Command.sidecar('ffmpeg', [
+                            const thumbCmd = Command.sidecar('binaries/ffmpeg', [
                                 '-ss', '1', // Capture at 1s
                                 '-i', inputPath,
                                 '-frames:v', '1',

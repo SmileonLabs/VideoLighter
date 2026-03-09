@@ -334,7 +334,7 @@ const App: React.FC = () => {
                 outDir = settings.customOutputPath;
             }
 
-            const outputPath = `${outDir}\\${filename}_compressed${resolutionSuffix}.${ext}`;
+            const outputPath = `${outDir}/${filename}_compressed${resolutionSuffix}.${ext}`;
 
             const task = processingMode === 'video'
                 ? compressVideo(

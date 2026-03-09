@@ -210,9 +210,9 @@ i18n
                         "terms_sec3_desc": "The software is provided \"as is\". We are not responsible for data loss or system errors during use. Always backup your important files."
                     },
                     "seo": {
-                        "title": "VideoLighter | Fast Offline Video & Image Compressor for Desktop",
-                        "description": "Compress videos and images quickly on your PC with no uploads. A privacy-first offline desktop compressor focused on speed and quality.",
-                        "keywords": "video compressor, image compressor, offline desktop app, local compression, privacy video compression, windows video compressor, videolighter"
+                        "title": "VideoLighter | Compress Videos 80% Smaller — Offline, No Quality Loss",
+                        "description": "VideoLighter compresses videos up to 80% smaller using SVT-AV1 and VP9 engines with no visible quality loss. 100% offline desktop app for Windows and macOS. Preserves 10-bit HDR. Free to try.",
+                        "keywords": "video compressor, image compressor, offline desktop app, local compression, privacy video compression, windows video compressor, mac video compressor, videolighter, SVT-AV1 compressor, VP9 compression, HDR video compressor, reduce video size, compress video without quality loss, HandBrake alternative"
                     },
                     "footer": {
                         "contact": "Contact: contact@smileon.app",
@@ -423,9 +423,9 @@ i18n
                         "terms_sec3_desc": "본 프로그램은 \"있는 그대로\" 제공되며, 서비스 이용 중 발생한 데이터 손실이나 시스템 오류에 대해 직접적인 책임을 지지 않습니다. 중요 파일은 항상 백업을 권장합니다."
                     },
                     "seo": {
-                        "title": "VideoLighter | 빠른 오프라인 데스크탑 영상/이미지 압축",
-                        "description": "영상과 이미지를 내 PC에서 서버 업로드 없이 빠르게 압축하세요. 속도와 프라이버시를 지키는 오프라인 데스크탑 압축 앱입니다.",
-                        "keywords": "동영상 압축, 이미지 압축, 오프라인 압축, 데스크탑 앱, 로컬 압축, 개인정보 보호, 비디오라이터"
+                        "title": "VideoLighter | 동영상 용량 80% 줄이기 — 화질 그대로, 오프라인 압축",
+                        "description": "VideoLighter는 SVT-AV1, VP9 차세대 코덱으로 동영상 용량을 최대 80% 줄입니다. 화질 손실 없음, 100% 오프라인, 아이폰 HDR 완벽 보존. Windows/macOS 무료 체험.",
+                        "keywords": "동영상 압축, 영상 압축 프로그램, 동영상 용량 줄이기, 화질 손실 없는 압축, 이미지 압축, 오프라인 압축, 데스크탑 앱, 비디오라이터, VideoLighter, 아이폰 영상 압축, 4K 영상 압축, HDR 영상 압축, 무료 동영상 압축"
                     },
                     "footer": {
                         "contact": "문의 : contact@smileon.app",

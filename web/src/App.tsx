@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import MyPage from './pages/MyPage';
 import AdminPage from './pages/AdminPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import { useAuth } from './hooks/useAuth';
 import Analytics from './components/Analytics';
 import './i18n';
@@ -30,6 +31,7 @@ function App() {
       <Analytics />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route 
           path="/mypage" 
           element={

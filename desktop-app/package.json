@@ -9,6 +9,12 @@
         "preview": "vite preview",
         "tauri": "tauri",
         "sync:version": "node scripts/sync-version.mjs",
+        "setup:ffmpeg": "node scripts/setup-ffmpeg.mjs",
+        "setup:ffmpeg:all": "node scripts/setup-ffmpeg.mjs --all",
+        "build:mac": "npm run setup:ffmpeg && tauri build --target universal-apple-darwin",
+        "build:mac:arm": "npm run setup:ffmpeg && tauri build --target aarch64-apple-darwin",
+        "build:mac:intel": "npm run setup:ffmpeg && tauri build --target x86_64-apple-darwin",
+        "build:win": "npm run setup:ffmpeg && tauri build --target x86_64-pc-windows-msvc",
         "release:patch": "npm version patch --no-git-tag-version && npm run sync:version",
         "release:minor": "npm version minor --no-git-tag-version && npm run sync:version",
         "release:major": "npm version major --no-git-tag-version && npm run sync:version"

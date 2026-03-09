@@ -800,7 +800,7 @@ const Home = () => {
                         </div>
 
                         <div className="flex gap-8 text-sm font-medium">
-                            <button onClick={() => openLegal('privacy')} className="hover:text-indigo-500 transition-colors cursor-pointer">{t('legal.privacy_title')}</button>
+                            <Link to="/privacy" className="hover:text-indigo-500 transition-colors cursor-pointer">{t('legal.privacy_title')}</Link>
                             <button onClick={() => openLegal('terms')} className="hover:text-indigo-500 transition-colors cursor-pointer">{t('legal.terms_title')}</button>
                             <button onClick={() => openLegal('contact')} className="hover:text-indigo-500 transition-colors cursor-pointer">Contact</button>
                         </div>
