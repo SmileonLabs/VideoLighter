@@ -966,5 +966,6 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     },
 };
 
-export const FORMAT_OPTIONS = ['MP4', 'WebM', 'MKV', 'GIF'] as const;
+// AV1 = MP4 컨테이너 + libsvtav1 코덱. 차세대 코덱 옵션 (HEVC 대비 ~30% 더 작음, 동일 화질).
+export const FORMAT_OPTIONS = ['MP4', 'WebM', 'MKV', 'GIF', 'AV1'] as const;
 export const RESOLUTION_OPTIONS = ['Original', '4K', '1080p', '720p', '480p', 'Instagram', 'YouTube', 'Custom'] as const;

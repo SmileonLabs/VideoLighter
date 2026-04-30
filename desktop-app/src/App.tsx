@@ -493,7 +493,9 @@ const App: React.FC = () => {
         rootPath: string;
         files: Array<{ path: string; fileName: string; size: number; mediaType: string; relativePath: string }>;
     }): VideoFile[] => {
-        const videoExt = settings.format.toLowerCase();
+        // 'AV1' 포맷은 코덱 → 실제 컨테이너는 mp4
+        const rawVideoExt = settings.format.toLowerCase();
+        const videoExt = rawVideoExt === 'av1' ? 'mp4' : rawVideoExt;
         const imageExt = settings.imageFormat.toLowerCase();
         const compressedRoot = `${scanData.rootPath}/_velo_compressed`;
         return scanData.files.map((sf) => {
@@ -593,7 +595,9 @@ const App: React.FC = () => {
         const fileMediaType: 'video' | 'image' = file.mediaType ?? processingMode;
         const videoFormat = settings.format;
         const imageFormat = settings.imageFormat;
-        const ext = (fileMediaType === 'image' ? imageFormat : videoFormat).toLowerCase();
+        // 'AV1' 포맷은 컨테이너가 아니라 코덱 — 실제 파일 확장자는 .mp4 (libsvtav1 in MP4)
+        const rawExt = (fileMediaType === 'image' ? imageFormat : videoFormat).toLowerCase();
+        const ext = rawExt === 'av1' ? 'mp4' : rawExt;
 
         try {
             const path = file.path;

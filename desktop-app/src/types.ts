@@ -19,7 +19,8 @@ export type Resolution = 'Original' | '1080p' | '720p' | '480p';
 export type ResolutionPreset = 'Original' | '4K' | '1080p' | '720p' | '480p' | 'Custom' | 'Instagram' | 'YouTube';
 
 export interface CompressionSettings {
-    format: 'MP4' | 'WebM' | 'MKV' | 'GIF';
+    // 'AV1' 선택 시 컨테이너는 MP4, 코덱은 libsvtav1로 강제. 차세대 코덱 진입점.
+    format: 'MP4' | 'WebM' | 'MKV' | 'GIF' | 'AV1';
     resolution: ResolutionPreset;
     customWidth?: number;
     customHeight?: number;

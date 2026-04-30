@@ -228,8 +228,10 @@ export function compressVideo(
         } else {
             // Priority: Hardware Encoder (if Turbo) > Specified Codec > Software
             let finalEncoder = 'libaom-av1';
+            // 'AV1' 포맷 선택 시 코덱 강제 — 토글(useHighEfficiencyCodec)과 무관하게 무조건 AV1.
+            const forceAV1 = options.format === 'AV1';
 
-            if (options.useHighEfficiencyCodec) {
+            if (options.useHighEfficiencyCodec || forceAV1) {
                 // === AV1 Mode (High Efficiency) ===
                 finalEncoder = encoder; // Default to best detected AV1 encoder
 
