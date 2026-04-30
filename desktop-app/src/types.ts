@@ -40,7 +40,9 @@ export interface CompressionSettings {
     customOutputPath?: string;
     useHighEfficiencyCodec: boolean; // true = AV1 (High Tech), false = VP9 (Safe)
     // PNG는 무손실 방식이라 압축 효과가 미미 → 출력 옵션에서 제외.
-    imageFormat: 'JPG' | 'WEBP';
+    // AVIF — 차세대 코덱(AV1). JPEG 대비 ~50% 더 작은 파일에 동일 화질.
+    // iOS 16+, macOS 13+, Android 12+, Windows 11+에서 OS 단 디코딩 지원.
+    imageFormat: 'JPG' | 'WEBP' | 'AVIF';
     imageQuality: number; // 1-100
 }
 

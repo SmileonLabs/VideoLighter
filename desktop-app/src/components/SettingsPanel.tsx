@@ -220,12 +220,13 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             </label>
                             <select
                                 value={settings.imageFormat}
-                                onChange={(e) => updateSettings({ imageFormat: e.target.value as 'JPG' | 'WEBP' })}
+                                onChange={(e) => updateSettings({ imageFormat: e.target.value as 'JPG' | 'WEBP' | 'AVIF' })}
                                 disabled={isProcessing}
                                 className="w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm rounded-xl p-2.5 focus:ring-2 focus:ring-primary-500 outline-none transition-all"
                             >
                                 <option value="JPG">JPG</option>
                                 <option value="WEBP">WEBP</option>
+                                <option value="AVIF">AVIF (차세대, 최고 압축률)</option>
                             </select>
                         </section>
 

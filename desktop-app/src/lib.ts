@@ -41,19 +41,25 @@ function getMimeForInput(path: string): string {
     return 'image/jpeg';
 }
 
-function getMimeForOutput(format: 'JPG' | 'PNG' | 'WEBP'): string {
+function getMimeForOutput(format: 'JPG' | 'PNG' | 'WEBP' | 'AVIF'): string {
     if (format === 'PNG') return 'image/png';
     if (format === 'WEBP') return 'image/webp';
+    if (format === 'AVIF') return 'image/avif';
     return 'image/jpeg';
 }
 
 export function compressImage(
     inputPath: string,
     outputPath: string,
-    format: 'JPG' | 'PNG' | 'WEBP',
+    format: 'JPG' | 'PNG' | 'WEBP' | 'AVIF',
     quality: number,
     onProgress?: ProgressCallback
 ): { promise: Promise<void>, stop: () => Promise<void> } {
+    // AVIF는 Canvas API가 지원 안 함 → FFmpeg 경로로 분기
+    if (format === 'AVIF') {
+        return compressToAvifWithProgress(inputPath, outputPath, quality, onProgress);
+    }
+
     const run = async () => {
         const sourceBytes = await readFile(inputPath);
         const sourceDataUrl = toDataUrl(sourceBytes, getMimeForInput(inputPath));
@@ -93,6 +99,50 @@ export function compressImage(
         promise: run(),
         stop: async () => {
             return;
+        }
+    };
+}
+
+/// AVIF용 progress 처리를 caller의 onProgress로 위임 (compressToAvif가 내부 fixed undefined라 분리).
+function compressToAvifWithProgress(
+    inputPath: string,
+    outputPath: string,
+    quality: number,
+    onProgress?: ProgressCallback
+): { promise: Promise<void>, stop: () => Promise<void> } {
+    let child: Child | null = null;
+
+    const run = async () => {
+        const normalized = Math.max(1, Math.min(100, quality));
+        // AV1 CRF: quality 100 → 18(시각적 무손실), 50 → 34, 1 → 50.
+        const crf = Math.round(50 - (normalized * 32 / 100));
+
+        const command = Command.sidecar('binaries/ffmpeg', [
+            '-y',
+            '-i', inputPath,
+            '-c:v', 'libsvtav1',
+            '-crf', String(crf),
+            '-still-picture', '1',
+            '-pix_fmt', 'yuv420p',
+            outputPath,
+        ]);
+
+        const exitCode = await new Promise<number>((resolve, reject) => {
+            command.on('close', (data) => resolve(data.code ?? -1));
+            command.on('error', (err) => reject(new Error(err)));
+            command.spawn().then((c) => { child = c; }).catch(reject);
+        });
+
+        if (exitCode !== 0) {
+            throw new Error(`AVIF 인코딩 실패 (exit ${exitCode})`);
+        }
+        if (onProgress) onProgress({ percent: 100, time: '', fps: 0, speed: '' });
+    };
+
+    return {
+        promise: run(),
+        stop: async () => {
+            await child?.kill();
         }
     };
 }
